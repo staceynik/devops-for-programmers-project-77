@@ -1,0 +1,8 @@
+---
+- name: Deploy Node.js App
+  hosts: your_droplets
+  become: true
+  tags: deploy
+
+  roles:
+    - nodejs_app

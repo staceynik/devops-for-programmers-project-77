@@ -1,0 +1,11 @@
+- name: Start Docker container for Node.js app
+  docker_container:
+    name: nodejs_app
+    image: node:14
+    ports:
+      - "3000:3000"
+    volumes:
+      - /home/ubuntu/app:/usr/src/app
+    state: started
+    restart_policy: always
+  tags: deploy
