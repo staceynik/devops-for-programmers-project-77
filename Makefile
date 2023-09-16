@@ -6,10 +6,13 @@ init:
 	@cd terraform && terraform init
 
 apply:
-	cd terraform && terraform apply -var-file=$(TF_VARS_FILE_TERRAFORM)
+	cd terraform && terraform apply -var-file="secrets.auto.tfvars"
 
 destroy:
 	@cd terraform && terraform destroy -var-file=$(TF_VARS_FILE_TERRAFORM)
 
+install-ansible-roles:
+	@ansible-galaxy install -r ansible/requirements.yml
+
 ansible-deploy:
-	@ansible-playbook -i ansible/inventory -e "TF_VARS_FILE_TERRAFORM=$(TF_VARS_FILE_TERRAFORM)" ansible/playbook.yml
+	@ansible-playbook -i ansible/inventory.ini -e "TF_VARS_FILE_TERRAFORM=$(TF_VARS_FILE_TERRAFORM)" ansible/playbook.yml

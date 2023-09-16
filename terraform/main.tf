@@ -10,8 +10,8 @@ terraform {
 variable "do_token" {}
 
 resource "random_string" "suffix" {
-  count = 2
-  length = 6
+  count   = 2
+  length  = 6
   special = false
 }
 
@@ -19,28 +19,31 @@ provider "digitalocean" {
   token = var.do_token
 }
 
+resource "digitalocean_ssh_key" "key" {
+  name       = "key"
+  public_key = file("~/.ssh/id_rsa.pub")
+}
+
 resource "digitalocean_droplet" "web" {
   count = 2
-  image  = "ubuntu-18-04-x64"
+  image  = "ubuntu-22-04-x64"
   name   = "web-${element(random_string.suffix.*.result, count.index)}"
   region = "ams3"
   size   = "s-2vcpu-4gb"
 
+  ssh_keys = [digitalocean_ssh_key.key.id]
+
   user_data = <<-EOF
-              #!/bin/bash
-              apt-get update
-              apt-get install -y nginx
+    #!/bin/bash
+    apt-get update
+    apt-get install -y nginx
 
-              apt-get install -y certbot python-certbot-nginx
+    apt-get install -y certbot python-certbot-nginx
 
-              certbot --nginx --non-interactive --agree-tos -m your_email@example.com -d your_domain.com
+    certbot --nginx --non-interactive --agree-tos -m your_email@example.com -d your_domain.com
 
-              systemctl restart nginx
-              EOF
-}
-
-output "droplet_ips" {
-  value = flatten([for instance in digitalocean_droplet.web : instance.ipv4_address])
+    systemctl restart nginx
+  EOF
 }
 
 resource "digitalocean_loadbalancer" "lb" {
@@ -54,6 +57,8 @@ resource "digitalocean_loadbalancer" "lb" {
     target_port     = 80
     target_protocol = "http"
   }
+
+  droplet_ids = digitalocean_droplet.web.*.id
 }
 
 resource "digitalocean_domain" "example_domain" {
@@ -68,4 +73,13 @@ resource "digitalocean_record" "lb_dns" {
   name   = "web-${count.index}"
 
   value = digitalocean_loadbalancer.lb.ip
+}
+
+resource "digitalocean_database_cluster" "my_db" {
+  name        = "my-database"
+  engine      = "pg"
+  version     = "12"
+  node_count  = 1
+  size        = "db-s-1vcpu-2gb"
+  region      = "ams3"
 }

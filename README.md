@@ -5,16 +5,41 @@
 
 Installing a Droplet in the Digital Ocean Cloud with Nginx
 
-**Important:** Attention! Before executing any commands, make sure you understand how they work and what changes they will make to the system.
+**Important:** Attention! Before executing any commands, make sure you understa>
 
 ## Running Commands as Root
 
-Commands for managing the project are run as the root user. If you want to execute commands as your own user, you need to provide write and execute permissions to the project directory. You can do this using the following command:
+Commands for managing the project are run as the root user. If you want to exec>
 
 ```bash
 chmod -R u+rwx /path/to/devops-for-programmers-project-77
 ```
-Replace /path/to/devops-for-programmers-project-77 with the actual path to the project directory on your system.
+Replace /path/to/devops-for-programmers-project-77 with the actual path to the >
+
+## Setting up SSH Key
+
+Before running Terraform to create your Droplets, you need to ensure that you have an SSH key set up and associated with your DigitalOcean account. Here are the steps to do that:
+
+Generate an SSH key pair on your local machine if you haven't already:
+
+   ```bash
+   ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+This will generate a public and private key pair. The public key is usually located in ~/.ssh/id_rsa.pub.
+
+1. Log in to your DigitalOcean account.
+
+2. In the DigitalOcean dashboard, go to Settings > Security > SSH Keys.
+
+3. Click on the `Add SSH Key` button.
+
+4. Give your SSH key a name (e.g., "My SSH Key").
+
+5. In the Public Key Content field, paste the content of your public key file (~/.ssh/id_rsa.pub).
+
+6. Click Add SSH Key to save it.
+
+Now you have an SSH key associated with your DigitalOcean account, and you can use it in your Terraform configuration to create Droplets.
 
 ## Requirements
 
