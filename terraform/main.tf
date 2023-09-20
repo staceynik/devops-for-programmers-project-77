@@ -75,11 +75,18 @@ resource "digitalocean_record" "lb_dns" {
   value = digitalocean_loadbalancer.lb.ip
 }
 
+resource "digitalocean_database_user" "my_db_user" {
+  name             = var.db_username
+  cluster_id       = digitalocean_database_cluster.my_db.id
+}
+
 resource "digitalocean_database_cluster" "my_db" {
   name        = "my-database"
   engine      = "pg"
   version     = "12"
-  node_count  = 1
   size        = "db-s-1vcpu-2gb"
   region      = "ams3"
+  node_count  = 1
 }
+
+
