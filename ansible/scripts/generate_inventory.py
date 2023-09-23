@@ -18,24 +18,31 @@ inventory_file = os.path.relpath(
 terraform_state = json.loads(open(terraform_state_file).read())
 
 resources = terraform_state['resources']
-unique_ips = set()  # Создаем множество для хранения уникальных IP-адресов
+unique_ips_with_names = {}  # Создаем словарь для хранения уникальных IP-адресов с их именами
 
-# Пройдемся по всем ресурсам и соберем уникальные IP-адреса
+# Пройдемся по всем ресурсам и соберем уникальные IP-адреса с их именами
 for resource in resources:
     if resource['type'] == 'digitalocean_droplet':
         for instance in resource['instances']:
-            unique_ips.add(instance['attributes']['ipv4_address'])
+            name = instance['attributes']['name']
+            ip = instance['attributes']['ipv4_address']
+            unique_ips_with_names[ip] = name
     elif resource['type'] == 'digitalocean_database_cluster':
         for instance in resource['instances']:
-            unique_ips.add(instance['attributes']['host'])
+            name = instance['attributes']['name']
+            ip = instance['attributes']['host']
+            unique_ips_with_names[ip] = name
     elif resource['type'] == 'digitalocean_domain':
         for instance in resource['instances']:
-            unique_ips.add(instance['attributes']['name'])
+            name = instance['attributes']['name']
+            unique_ips_with_names[name] = name
     elif resource['type'] == 'digitalocean_loadbalancer':
         for instance in resource['instances']:
-            unique_ips.add(instance['attributes']['ip'])
+            name = instance['attributes']['name']
+            ip = instance['attributes']['ip']
+            unique_ips_with_names[ip] = name
 
 # Создайте inventory.ini
 with open(inventory_file, 'w') as f:
-    for ip in unique_ips:
-        f.write(f"host ansible_host={ip}\n")
+    for ip, name in unique_ips_with_names.items():
+        f.write(f"{name} ansible_host={ip}\n")

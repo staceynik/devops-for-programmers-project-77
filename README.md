@@ -47,23 +47,7 @@ Now you have an SSH key associated with your DigitalOcean account, and you can u
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) (install the latest version)
 - [DigitalOcean Account](https://www.digitalocean.com/) (sign up if you don't have one)
 - [Make](https://www.gnu.org/software/make/)
-- [Go](https://golang.org/dl/) (install the latest version)
 
-### Installing terraform-inventory
-
-To dynamically generate an Ansible inventory from your Terraform state, you can use `terraform-inventory`. If you're using Ubuntu, you can install Go and then `terraform-inventory` with the following commands:
-
-```bash
-sudo apt install golang-go
-
-go install github.com/adammck/terraform-inventory@latest
-```
-Or you can use:
-
-```bash
-
-sudo apt install gccgo-go
-```
 
 ### Installing Ansible Roles
 
@@ -103,6 +87,10 @@ do_token = "your_secret_token"
 After executing the terraform apply command, Terraform will provide you with information about the created Droplet, including its IP address.
 
 Open your web browser and visit the Droplet's IP address to see the default Nginx page.
+
+7. Run the `make generate-inventory` command to generate an Ansible inventory file that includes the IP addresses of all the created resources.
+
+To access the newly created Droplets, you can connect using the following command: ssh root@<IP Address>. You can find the IP address in either the inventory file located in the Ansible directory or within the DigitalOcean project.
 
 ### Destroying Infrastructure
 

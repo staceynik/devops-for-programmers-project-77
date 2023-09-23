@@ -18,4 +18,4 @@ ansible-deploy:
 	@ansible-playbook -i ansible/inventory.ini -e "TF_VARS_FILE_TERRAFORM=$(TF_VARS_FILE_TERRAFORM)" ansible/playbook.yml
 
 generate-inventory:
-	@python3 $(INVENTORY_SCRIPT)
+	python3 ~/devops-for-programmers-project-77/ansible/scripts/generate_inventory.py
