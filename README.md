@@ -49,14 +49,6 @@ Now you have an SSH key associated with your DigitalOcean account, and you can u
 - [Make](https://www.gnu.org/software/make/)
 
 
-### Installing Ansible Roles
-
-Before running the playbook, make sure you have the required Ansible roles installed. You can install them using the `ansible-galaxy` command:
-
-```bash
-ansible-galaxy install -r ansible/requirements.yml
-```
-
 ## Instructions
 
 1. Clone the repository:
@@ -76,11 +68,11 @@ ansible-galaxy install -r ansible/requirements.yml
 ```hcl
 do_token = "your_secret_token"
 ```
-5. Run the terraform init command to initialize Terraform:
+5. **Initialize the Infrastructure:** Run the terraform init command to initialize Terraform:
 
 ```make init```
 
-6. Run the terraform apply command to create a Droplet with Nginx installed on DigitalOcean:
+6. **Apply Infrastructure Changes:** Run the terraform apply command to create a Droplet with Nginx installed on DigitalOcean:
 
 ```make apply```
 
@@ -88,9 +80,20 @@ After executing the terraform apply command, Terraform will provide you with inf
 
 Open your web browser and visit the Droplet's IP address to see the default Nginx page.
 
-7. Run the `make generate-inventory` command to generate an Ansible inventory file that includes the IP addresses of all the created resources.
+7. **Generate Inventory File:** Run the `make generate-inventory` command to generate an Ansible inventory file that includes the IP addresses of all the created resources.
 
-To access the newly created Droplets, you can connect using the following command: ssh root@<IP Address>. You can find the IP address in either the inventory file located in the Ansible directory or within the DigitalOcean project.
+8. **Install Ansible Roles:** Before running the playbook, make sure you have the required Ansible roles installed. You can install>
+
+```bash
+ansible-galaxy install -r ansible/requirements.yml
+```
+To access the newly created Droplets, you can connect using the following command:??????????? You can find the IP address in either the inventory file located in the Ansible directory or within the DigitalOcean project.
+
+9. **Deploy Your Application to Droplets:** Deploy your application to the Droplets by executing the following command:
+
+    ```bash
+    make deploy-droplets
+    ```
 
 ### Destroying Infrastructure
 

@@ -19,9 +19,8 @@ provider "digitalocean" {
   token = var.do_token
 }
 
-resource "digitalocean_ssh_key" "key" {
-  name       = "key"
-  public_key = file("~/.ssh/id_rsa.pub")
+data "digitalocean_ssh_key" "example_ssh_key" {
+  name = "key" 
 }
 
 resource "digitalocean_droplet" "web" {
@@ -30,8 +29,6 @@ resource "digitalocean_droplet" "web" {
   name   = "web-${element(random_string.suffix.*.result, count.index)}"
   region = "ams3"
   size   = "s-2vcpu-4gb"
-
-  ssh_keys = [digitalocean_ssh_key.key.id]
 
   user_data = <<-EOF
     #!/bin/bash
@@ -44,6 +41,10 @@ resource "digitalocean_droplet" "web" {
 
     systemctl restart nginx
   EOF
+
+  ssh_keys = [
+    data.digitalocean_ssh_key.example_ssh_key.fingerprint,
+  ]
 }
 
 resource "digitalocean_loadbalancer" "lb" {

@@ -1,26 +1,28 @@
 import json
 import os
 
-# Получите текущий рабочий каталог
 script_dir = os.getcwd()
 
-# Путь к файлу состояния Terraform относительно текущего рабочего каталога
 terraform_state_file = os.path.relpath(
     os.path.join('terraform', 'terraform.tfstate'), start=script_dir
 )
 
-# Путь к файлу inventory.ini относительно текущего рабочего каталога
 inventory_file = os.path.relpath(
     os.path.join('ansible', 'inventory.ini'), start=script_dir
 )
 
-# Загрузите файл состояния Terraform
 terraform_state = json.loads(open(terraform_state_file).read())
 
 resources = terraform_state['resources']
-unique_ips_with_names = {}  # Создаем словарь для хранения уникальных IP-адресов с их именами
+unique_ips_with_names = {}
 
-# Пройдемся по всем ресурсам и соберем уникальные IP-адреса с их именами
+host_groups = {
+    'droplets': [],
+    'load_balancer': [],
+    'db': [],
+    'domain': [],
+}
+
 for resource in resources:
     if resource['type'] == 'digitalocean_droplet':
         for instance in resource['instances']:
@@ -42,7 +44,20 @@ for resource in resources:
             ip = instance['attributes']['ip']
             unique_ips_with_names[ip] = name
 
-# Создайте inventory.ini
+
+for ip, name in unique_ips_with_names.items():
+    if 'web-' in name and not name.startswith('web-lb'):
+        host_groups['droplets'].append(f"{name} ansible_host={ip} ansible_user=root")  # Добавьте ansible_user=root
+    elif 'web-lb' in name:
+        host_groups['load_balancer'].append(f"{name} ansible_host={ip} ansible_user=root")  # Добавьте ansible_user=root
+    elif 'my-database' in name:
+        host_groups['db'].append(f"{name} ansible_host={ip} ansible_user=root")  # Добавьте ansible_user=root
+    elif 'staceynik.store' in name:
+        host_groups['domain'].append(f"{name} ansible_host={ip} ansible_user=root")  # Добавьте ansible_user=root
+
+
 with open(inventory_file, 'w') as f:
-    for ip, name in unique_ips_with_names.items():
-        f.write(f"{name} ansible_host={ip}\n")
+    for group, hosts in host_groups.items():
+        f.write(f"[{group}]\n")
+        for host in hosts:
+            f.write(f"{host}\n")

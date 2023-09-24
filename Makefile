@@ -19,3 +19,6 @@ ansible-deploy:
 
 generate-inventory:
 	python3 ~/devops-for-programmers-project-77/ansible/scripts/generate_inventory.py
+
+deploy-droplets:
+	@cd ansible && ansible-playbook -i inventory.ini -l droplets playbook.yml
