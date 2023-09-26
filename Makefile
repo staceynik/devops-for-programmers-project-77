@@ -17,11 +17,11 @@ install-ansible-roles:
 deploy-droplets:
 	@ansible-playbook -i ansible/inventory.ini -l droplets --user=root ansible/playbook.yml
 
-remove-docker-containers:
-	@ansible-playbook -i ansible/inventory.ini --user=root ansible/remove_docker.yml --tags remove_docker_containers
+pull-image:
+	@ansible-playbook -i ansible/inventory.ini -l droplets --user=root ansible/playbook.yml --tags pull_image
 
-remove-docker-images:
-	@ansible-playbook -i ansible/inventory.ini --user=root ansible/remove_docker.yml --tags remove_docker_images
+run-container:
+	@ansible-playbook -i ansible/inventory.ini -l droplets --user=root ansible/playbook.yml --tags run_container
 
 destroy:
 	@cd terraform && terraform destroy -var-file=$(TF_VARS_FILE_TERRAFORM)

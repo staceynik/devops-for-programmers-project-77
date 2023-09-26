@@ -1,3 +1,4 @@
+---
 - hosts: droplets
   become: yes
   roles:
@@ -6,29 +7,19 @@
 - hosts: droplets
   become: yes
   tasks:
-    - name: Pull RabbitMQ image
+    - name: Pull Wiki.js image
       docker_image:
-        name: rabbitmq:3.8
+        name: lscr.io/linuxserver/wikijs:latest
         state: present
+      tags:
+        - pull_image
 
-    - name: Run RabbitMQ container
+    - name: Run Wiki.js container
       docker_container:
-        name: rabbitmq
-        image: rabbitmq:3.8
+        name: wikijs
+        image: lscr.io/linuxserver/wikijs:latest
         state: started
         ports:
-          - 5672:5672
-          - 15672:15672
-    - name: Install jq
-      become: yes
-      apt:
-        name: jq
-        state: present
-
-    - name: Get RabbitMQ image version
-      shell: docker images --format '{{ "{{.Repository}}:{{.Tag}}" }}' | grep 'rabbitmq:3.8' || true
-      register: rabbitmq_version
-
-    - name: Print RabbitMQ version
-      debug:
-        msg: "RabbitMQ version: {{ rabbitmq_version.stdout }}"
+          - 3000:3000
+      tags:
+        - run_container
