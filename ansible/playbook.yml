@@ -1,7 +1,34 @@
 - hosts: droplets
   become: yes
   roles:
-    - role: docker_install
-    - role: nodejs_app
-      tags:
-        - app
+    - docker_install
+
+- hosts: droplets
+  become: yes
+  tasks:
+    - name: Pull RabbitMQ image
+      docker_image:
+        name: rabbitmq:3.8
+        state: present
+
+    - name: Run RabbitMQ container
+      docker_container:
+        name: rabbitmq
+        image: rabbitmq:3.8
+        state: started
+        ports:
+          - 5672:5672
+          - 15672:15672
+    - name: Install jq
+      become: yes
+      apt:
+        name: jq
+        state: present
+
+    - name: Get RabbitMQ image version
+      shell: docker images --format '{{ "{{.Repository}}:{{.Tag}}" }}' | grep 'rabbitmq:3.8' || true
+      register: rabbitmq_version
+
+    - name: Print RabbitMQ version
+      debug:
+        msg: "RabbitMQ version: {{ rabbitmq_version.stdout }}"

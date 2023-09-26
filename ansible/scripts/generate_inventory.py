@@ -47,13 +47,13 @@ for resource in resources:
 
 for ip, name in unique_ips_with_names.items():
     if 'web-' in name and not name.startswith('web-lb'):
-        host_groups['droplets'].append(f"{name} ansible_host={ip} ansible_user=root")  # Добавьте ansible_user=root
+        host_groups['droplets'].append(f"{name} ansible_host={ip}")
     elif 'web-lb' in name:
-        host_groups['load_balancer'].append(f"{name} ansible_host={ip} ansible_user=root")  # Добавьте ansible_user=root
+        host_groups['load_balancer'].append(f"{name} ansible_host={ip}")
     elif 'my-database' in name:
-        host_groups['db'].append(f"{name} ansible_host={ip} ansible_user=root")  # Добавьте ansible_user=root
+        host_groups['db'].append(f"{name} ansible_host={ip}")
     elif 'staceynik.store' in name:
-        host_groups['domain'].append(f"{name} ansible_host={ip} ansible_user=root")  # Добавьте ansible_user=root
+        host_groups['domain'].append(f"{name} ansible_host={ip}")  # Удалите ansible_user=root
 
 
 with open(inventory_file, 'w') as f:

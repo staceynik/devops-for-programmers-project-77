@@ -1,0 +1,22 @@
+---
+- name: Remove all Docker containers
+  hosts: droplets
+  become: yes
+  tasks:
+    - name: Stop and remove all Docker containers
+      docker_container:
+        name: "*"
+        state: absent
+      tags:
+        - remove_docker_containers
+
+- name: Remove all Docker images
+  hosts: droplets
+  become: yes
+  tasks:
+    - name: Remove all Docker images
+      docker_image:
+        name: "*"
+        state: absent
+      tags:
+        - remove_docker_images
