@@ -23,3 +23,11 @@
           - 3000:3000
       tags:
         - run_container
+
+- name: Configure datadog on webservers
+  hosts: droplets
+  become: true
+  roles:
+    - datadog.datadog
+  tags:
+    - configure_datadog
