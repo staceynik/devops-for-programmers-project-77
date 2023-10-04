@@ -20,11 +20,11 @@ provider "digitalocean" {
 }
 
 data "digitalocean_ssh_key" "example_ssh_key" {
-  name = "key" 
+  name = "key"
 }
 
 resource "digitalocean_droplet" "web" {
-  count = 2
+  count  = 2
   image  = "ubuntu-22-04-x64"
   name   = "web-${element(random_string.suffix.*.result, count.index)}"
   region = "ams3"
@@ -83,17 +83,17 @@ resource "digitalocean_record" "lb_dns" {
 }
 
 resource "digitalocean_database_user" "my_db_user" {
-  name             = var.db_username
-  cluster_id       = digitalocean_database_cluster.my_db.id
+  name       = var.db_username
+  cluster_id = digitalocean_database_cluster.my_db.id
 }
 
 resource "digitalocean_database_cluster" "my_db" {
-  name        = "my-database"
-  engine      = "pg"
-  version     = "12"
-  size        = "db-s-1vcpu-2gb"
-  region      = "ams3"
-  node_count  = 1
+  name       = "my-database"
+  engine     = "pg"
+  version    = "12"
+  size       = "db-s-1vcpu-2gb"
+  region     = "ams3"
+  node_count = 1
 }
 
 

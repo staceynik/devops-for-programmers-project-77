@@ -70,7 +70,7 @@ For integrating with Datadog, you need to set the required environment variables
      datadog_api_key: "your-datadog-api-key"
      app_key: "your-app-key"
    ```
-###Encrypt/Decrypt/Edit/View Vault
+**Encrypt/Decrypt/Edit/View Vault**
 
 To securely store sensitive information, Ansible utilizes built-in encryption functionality through Ansible Vault. For your convenience in managing the vault, we provide the following commands:
 
