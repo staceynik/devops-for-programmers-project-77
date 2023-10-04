@@ -31,15 +31,6 @@ resource "digitalocean_droplet" "web" {
   size   = "s-2vcpu-4gb"
 
   user_data = <<-EOF
-    #!/bin/bash
-    apt-get update
-    apt-get install -y nginx
-
-    apt-get install -y certbot python-certbot-nginx
-
-    certbot --nginx --non-interactive --agree-tos -m your_email@example.com -d your_domain.com
-
-    systemctl restart nginx
   EOF
 
   ssh_keys = [
