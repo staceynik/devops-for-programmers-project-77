@@ -82,6 +82,9 @@ To securely store sensitive information, Ansible utilizes built-in encryption fu
 
    ` make view_vault`: Views the contents of the vault file. Use this command to review confidential data within the vault file without editing it.
 
+- Before proceeding, ensure that you have extracted the credentials into `secrets.auto.tfvars` by running the following command:
+
+   ```make extract-secrets```
 
 6. **Initialize the Infrastructure:** Run the terraform init command to initialize Terraform:
 
@@ -95,16 +98,14 @@ After executing the terraform apply command, Terraform will provide you with inf
 
 Open your web browser and visit the Droplet's IP address to see the default Nginx page.
 
-8. **Generate Inventory File:** Run the `make generate-inventory` command to generate an Ansible inventory file that includes the IP addresses of all the created resources.
-
-9. **Install Ansible Roles:** Before running the playbook, make sure you have the required Ansible roles installed. You can install>
+8. **Install Ansible Roles:** Before running the playbook, make sure you have the required Ansible roles installed. You can install>
 
    ```bash
    install-ansible-roles
    ```
 To access the newly created Droplets, you can connect using the following command: `ssh root@IP_address_of_your_droplet` You can find the IP address in either the inventory file located in the Ansible directory or within the DigitalOcean project.
 
-10. **Deploy Your Application to Droplets:** Deploy your application to the Droplets by executing the following command:
+9. **Deploy Your Application to Droplets:** Deploy your application to the Droplets by executing the following command:
 
     ```bash
     make deploy-droplets

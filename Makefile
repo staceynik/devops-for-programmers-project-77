@@ -1,16 +1,13 @@
 TF_VARS_FILE_TERRAFORM = "secrets.auto.tfvars"
 VAULT_PASSWORD_FILE = $(CURDIR)/ansible_vault_password.txt
 
-.PHONY: init apply destroy generate-inventory install-ansible-roles deploy-droplets
+.PHONY: init apply destroy generate-inventory install-ansible-roles deploy-droplets extract-secrets
 
 init:
 	@cd terraform && terraform init
 
 apply:
 	cd terraform && terraform apply -var-file="secrets.auto.tfvars"
-
-generate-inventory:
-	python3 ~/devops-for-programmers-project-77/ansible/scripts/generate_inventory.py
 
 encrypt_vault:
 	ansible-vault encrypt --vault-password-file=$(VAULT_PASSWORD_FILE) ansible/group_vars/webservers/vault.yml
@@ -23,6 +20,9 @@ edit_vault:
 
 view_vault:
 	ansible-vault view --vault-password-file=$(VAULT_PASSWORD_FILE) ansible/group_vars/webservers/vault.yml
+
+extract-secrets:
+	@ansible-vault view --vault-password-file=$(VAULT_PASSWORD_FILE) ansible/group_vars/webservers/vault.yml | sed 's/:/=/g' >> terraform/secrets.auto.tfvars
 
 install-ansible-roles:
 	@ansible-galaxy install -r ansible/requirements.yml

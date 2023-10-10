@@ -4,23 +4,20 @@ terraform {
       source  = "digitalocean/digitalocean"
       version = "~> 2.0"
     }
+    datadog = {
+      source = "DataDog/datadog"
+    }
   }
 }
 
-variable "do_token" {}
+data "digitalocean_ssh_key" "example_ssh_key" {
+  name = "key"
+}
 
 resource "random_string" "suffix" {
   count   = 2
   length  = 6
   special = false
-}
-
-provider "digitalocean" {
-  token = var.do_token
-}
-
-data "digitalocean_ssh_key" "example_ssh_key" {
-  name = "key"
 }
 
 resource "digitalocean_droplet" "web" {
@@ -29,9 +26,6 @@ resource "digitalocean_droplet" "web" {
   name   = "web-${element(random_string.suffix.*.result, count.index)}"
   region = "ams3"
   size   = "s-2vcpu-4gb"
-
-  user_data = <<-EOF
-  EOF
 
   ssh_keys = [
     data.digitalocean_ssh_key.example_ssh_key.fingerprint,
@@ -87,4 +81,32 @@ resource "digitalocean_database_cluster" "my_db" {
   node_count = 1
 }
 
+resource "local_file" "inventory" {
+  filename = "../ansible/inventory.ini"
+  content = <<-EOT
+[droplets]
+${join("\n", [for instance in digitalocean_droplet.web : "web-${instance.name} ansible_host=${instance.ipv4_address} ansible_user=root"])}
 
+[load_balancer]
+web-lb ansible_host=${digitalocean_loadbalancer.lb.ip} ansible_user=root
+
+[db]
+my-database ansible_host=${digitalocean_database_cluster.my_db.host} ansible_user=postgres
+
+[domain]
+staceynik.store
+  EOT
+}
+
+resource "datadog_monitor" "my_monitor" {
+  name               = "Simple Monitor"
+  type               = "service check"
+  message            = "Test Service Check"
+  escalation_message = "Test Service Check (Escalated)"
+
+  query = "\"http.can_connect\".over(\"*\").by(\"*\").last(3).count_by_status()"
+
+  monitor_thresholds {
+    critical = 1
+  }
+}
