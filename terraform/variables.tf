@@ -16,12 +16,6 @@ variable "do_token" {
   default     = "YOUR_DIGITALOCEAN_API_TOKEN_HERE"
 }
 
-variable "db_password" {
-  description = "Database Password"
-  type        = string
-  default     = "YOUR_DB_PASSWORD_HERE"
-}
-
 variable "db_username" {
   description = "Database Username"
   type        = string

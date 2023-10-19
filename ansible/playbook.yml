@@ -1,6 +1,11 @@
 ---
 - hosts: droplets
   become: yes
+  vars:
+    db_host: "{{ hostvars[inventory_hostname].db_host }}"
+    db_user: "{{ hostvars[inventory_hostname].db_user }}"
+    db_password: "{{ hostvars[inventory_hostname].db_password }}"
+    db_name: "{{ hostvars[inventory_hostname].db_name }}"
   roles:
     - docker_install
 
@@ -11,6 +16,7 @@
       docker_image:
         name: lscr.io/linuxserver/wikijs:latest
         state: present
+        source: pull
       tags:
         - pull_image
 
@@ -31,3 +37,4 @@
     - datadog.datadog
   tags:
     - configure_datadog
+

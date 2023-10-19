@@ -2,5 +2,5 @@ terraform/secrets.auto.tfvars
 terraform/terraform.tfstate
 terraform/*.backup
 ansible/inventory.ini
-ansible_vault_password.txt
+ansible/ansible_vault_password.txt
 terraform/.terraform/providers/registry.terraform.io

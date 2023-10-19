@@ -1,43 +1,37 @@
-TF_VARS_FILE_TERRAFORM = "secrets.auto.tfvars"
-VAULT_PASSWORD_FILE = $(CURDIR)/ansible_vault_password.txt
-
-.PHONY: init apply destroy generate-inventory install-ansible-roles deploy-droplets extract-secrets
+.PHONY: init apply destroy terraform ansible encrypt_vault decrypt_vault edit_vault view_vault install-roles deploy-droplets pull-image run-container configure_datadog
 
 init:
 	@cd terraform && terraform init
 
 apply:
-	cd terraform && terraform apply -var-file="secrets.auto.tfvars"
-
-encrypt_vault:
-	ansible-vault encrypt --vault-password-file=$(VAULT_PASSWORD_FILE) ansible/group_vars/webservers/vault.yml
-
-decrypt_vault:
-	ansible-vault decrypt --vault-password-file=$(VAULT_PASSWORD_FILE) ansible/group_vars/webservers/vault.yml
-
-edit_vault:
-	ansible-vault edit --vault-password-file=$(VAULT_PASSWORD_FILE) ansible/group_vars/webservers/vault.yml
-
-view_vault:
-	ansible-vault view --vault-password-file=$(VAULT_PASSWORD_FILE) ansible/group_vars/webservers/vault.yml
-
-extract-secrets:
-	@ansible-vault view --vault-password-file=$(VAULT_PASSWORD_FILE) ansible/group_vars/webservers/vault.yml | sed 's/:/=/g' >> terraform/secrets.auto.tfvars
-
-install-ansible-roles:
-	@ansible-galaxy install -r ansible/requirements.yml
-
-deploy-droplets:
-	@export ANSIBLE_HOST_KEY_CHECKING=False && ansible-playbook -i ansible/inventory.ini -l droplets --user=root ansible/playbook.yml
-
-pull-image:
-	@ansible-playbook -i ansible/inventory.ini -l droplets --user=root ansible/playbook.yml --tags pull_image
-
-run-container:
-	@ansible-playbook -i ansible/inventory.ini -l droplets --user=root ansible/playbook.yml --tags run_container
+	@cd terraform && terraform apply -var-file="secrets.auto.tfvars"
 
 destroy:
-	@cd terraform && terraform destroy -var-file=$(TF_VARS_FILE_TERRAFORM)
+	@cd terraform && terraform destroy -var-file="secrets.auto.tfvars"
+
+encrypt_vault:
+	@cd ansible && make encrypt_vault
+
+decrypt_vault:
+	@cd ansible && make decrypt_vault
+
+edit_vault:
+	@cd ansible && make edit_vault
+
+view_vault:
+	@cd ansible && make view_vault
+
+install-roles:
+	@cd ansible && make install-roles
+
+deploy-droplets:
+	@cd ansible && make deploy-droplets
+
+pull-image:
+	@cd ansible && make pull-image
+
+run-container:
+	@cd ansible && make run-container
 
 configure_datadog:
-	@ansible-playbook -i ansible/inventory.ini -l droplets --user=root ansible/playbook.yml --tags configure_datadog
+	@cd ansible && make configure_datadog

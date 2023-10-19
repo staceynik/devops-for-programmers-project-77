@@ -10,6 +10,11 @@ terraform {
   }
 }
 
+output "database_password" {
+  value = digitalocean_database_cluster.my_db.password
+  sensitive = true
+}
+
 data "digitalocean_ssh_key" "example_ssh_key" {
   name = "key"
 }
@@ -23,7 +28,7 @@ resource "random_string" "suffix" {
 resource "digitalocean_droplet" "web" {
   count  = 2
   image  = "ubuntu-22-04-x64"
-  name   = "web-${element(random_string.suffix.*.result, count.index)}"
+  name   = "web-${random_string.suffix[count.index].result}"
   region = "ams3"
   size   = "s-2vcpu-4gb"
 
@@ -84,14 +89,15 @@ resource "digitalocean_database_cluster" "my_db" {
 resource "local_file" "inventory" {
   filename = "../ansible/inventory.ini"
   content = <<-EOT
+
 [droplets]
-${join("\n", [for instance in digitalocean_droplet.web : "web-${instance.name} ansible_host=${instance.ipv4_address} ansible_user=root"])}
+${join("\n", [for instance in digitalocean_droplet.web : "${instance.name} ansible_host=${instance.ipv4_address} ansible_user=root"])}
 
 [load_balancer]
 web-lb ansible_host=${digitalocean_loadbalancer.lb.ip} ansible_user=root
 
 [db]
-my-database ansible_host=${digitalocean_database_cluster.my_db.host} ansible_user=postgres
+my-database ansible_host=${digitalocean_database_cluster.my_db.host} ansible_user=postgres db_password="${digitalocean_database_cluster.my_db.password}"
 
 [domain]
 staceynik.store
