@@ -11,7 +11,7 @@ terraform {
 }
 
 output "database_password" {
-  value = digitalocean_database_cluster.my_db.password
+  value     = digitalocean_database_cluster.my_db.password
   sensitive = true
 }
 
@@ -88,7 +88,7 @@ resource "digitalocean_database_cluster" "my_db" {
 
 resource "local_file" "inventory" {
   filename = "../ansible/inventory.ini"
-  content = <<-EOT
+  content  = <<-EOT
 
 [droplets]
 ${join("\n", [for instance in digitalocean_droplet.web : "${instance.name} ansible_host=${instance.ipv4_address} ansible_user=root"])}

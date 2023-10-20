@@ -3,8 +3,8 @@ provider "digitalocean" {
 }
 
 provider "datadog" {
-  api_key = var.datadog_api_key
-  app_key = var.app_key
+  api_key  = var.datadog_api_key
+  app_key  = var.app_key
   validate = false
-  api_url = "https://api.datadoghq.eu/"
+  api_url  = "https://api.datadoghq.eu/"
 }
