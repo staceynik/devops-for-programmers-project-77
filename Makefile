@@ -1,37 +1,40 @@
-.PHONY: init apply destroy terraform ansible encrypt_vault decrypt_vault edit_vault view_vault install-roles deploy-droplets pull-image run-container configure_datadog
+.PHONY: setup init apply destroy terraform ansible encrypt_vault decrypt_vault edit_vault view_vault install-roles deploy-droplets pull-image run-container configure_datadog
+
+setup:
+	@make -C ansible setup
 
 init:
-	@cd terraform && terraform init
+	@make -C terraform init
 
 apply:
-	@cd terraform && terraform apply -var-file="secrets.auto.tfvars"
+	@make -C terraform apply
 
 destroy:
-	@cd terraform && terraform destroy -var-file="secrets.auto.tfvars"
+	@make -C terraform destroy
 
 encrypt_vault:
-	@cd ansible && make encrypt_vault
+	@make -C ansible encrypt_vault
 
 decrypt_vault:
-	@cd ansible && make decrypt_vault
+	@make -C ansible decrypt_vault
 
 edit_vault:
-	@cd ansible && make edit_vault
+	@make -C ansible edit_vault
 
 view_vault:
-	@cd ansible && make view_vault
+	@make -C ansible view_vault
 
 install-roles:
-	@cd ansible && make install-roles
+	@make -C ansible install-roles
 
 deploy-droplets:
-	@cd ansible && make deploy-droplets
+	@make -C ansible deploy-droplets
 
 pull-image:
-	@cd ansible && make pull-image
+	@make -C ansible pull-image
 
 run-container:
-	@cd ansible && make run-container
+	@make -C ansible run-container
 
 configure_datadog:
-	@cd ansible && make configure_datadog
+	@make -C ansible configure_datadog

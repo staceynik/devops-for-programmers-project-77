@@ -9,26 +9,27 @@ In this project, we employ Terraform to provision infrastructure on DigitalOcean
 
 Before running Terraform to create your Droplets, you need to ensure that you have an SSH key set up and associated with your DigitalOcean account. Here are the steps to do that:
 
-Generate an SSH key pair on your local machine if you haven't already:
-
+1. **Check for Existing SSH Key (Optional):**
+First, check if you already have an SSH key pair on your local machine. You can do this by running the following command:
+   ```bash
+   ls ~/.ssh/id_rsa.pub
+```
+2. **Generate an SSH Key Pair (If Needed):**
+If you don't have an existing SSH key, you can generate one by running the following command:
    ```bash
    ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
-This will generate a public and private key pair. The public key is usually located in ~/.ssh/id_rsa.pub.
+This will generate a new SSH key pair. The public key will be located in `~/.ssh/id_rsa.pub`.
 
-1. Log in to your DigitalOcean account.
+3. **Log in to Your DigitalOcean Account:**
+4. **Add the SSH Key:**
+- In the DigitalOcean dashboard, go to Settings > Security > SSH Keys.
+- Click on the Add SSH Key button.
+- Give your SSH key a name (e.g., "My SSH Key").
+- In the Public Key Content field, paste the content of your public key file (~/.ssh/id_rsa.pub).
+- Click Add SSH Key to save it.
 
-2. In the DigitalOcean dashboard, go to Settings > Security > SSH Keys.
-
-3. Click on the `Add SSH Key` button.
-
-4. Give your SSH key a name (e.g., "My SSH Key").
-
-5. In the Public Key Content field, paste the content of your public key file (~/.ssh/id_rsa.pub).
-
-6. Click Add SSH Key to save it.
-
-Now you have an SSH key associated with your DigitalOcean account, and you can use it in your Terraform configuration to create Droplets.
+Now you have an SSH key associated with your DigitalOcean account. You can use this key in your Terraform configuration to create Droplets. If you already had an existing id_rsa.pub key, you can simply upload it to your DigitalOcean account and proceed with using it.
 
 ## Requirements
 
@@ -48,47 +49,43 @@ Now you have an SSH key associated with your DigitalOcean account, and you can u
 
    ```cd devops-for-programmers-project-77```
 
-3. Navigate to `ansible` directory and create the `ansible_vault_password.txt` file with your Ansible Vault password. For example:
+3. Automate Configuration Setup
 
-   ```your_vault_password```
+To simplify the setup process, you can use an automated script to create the necessary configuration files and securely manage sensitive information. Follow these steps:
 
-4. **Preparation of Terraform**
+- Run the setup script by executing the following command:
 
-Navigate to `terraform` directory and create the `secrets.auto.tfvars` file with your DigitalOcean token. For example:
+   ```bash
+   make setup
+```
+The script will prompt you to enter your Ansible Vault password, DigitalOcean token, Datadog API key, and Datadog App key.
 
-   ```hcl
-   do_token = "your_secret_token"
-   ```
-5. **Preparation of DataDog**
+Once you've provided the required information, the script will automatically generate the configuration files:
+`ansible/ansible_vault_password.txt` with your Ansible Vault password.
+`terraform/secrets.auto.tfvars` with your DigitalOcean token.
+`~/devops-for-programmers-project-77/group_vars/webservers/vault.yml` with your Datadog API key and App key securely stored.
 
-For integrating with Datadog, you need to set the required environment variables and keys. This project uses Ansible Vault to securely manage sensitive information. Here's how you can manage these variables:
+This automated setup process ensures that your configuration files are properly generated and your sensitive data is securely managed, making it more convenient and reliable.
 
-- Create a file named `vault.yml` in the directory `~/devops-for-programmers-project-76/group_vars/webservers`
-- Store your sensitive variables in this file. For example:
-
-   ```vault_vars:
-     datadog_api_key: "your-datadog-api-key"
-     app_key: "your-app-key"
-   ```
 **Encrypt/Decrypt/Edit/View Vault**
 
 To securely store sensitive information, Ansible utilizes built-in encryption functionality through Ansible Vault. For your convenience in managing the vault, we provide the following commands:
 
-   ` make ansible encrypt_vault`: Encrypts the vault file. This command helps safeguard sensitive data, such as passwords, API keys, and other secrets.
+   ` make encrypt_vault`: Encrypts the vault file. This command helps safeguard sensitive data, such as passwords, API keys, and other secrets.
 
-   ` make ansible decrypt_vault`: Decrypts the vault file. Use this command to access the data within the vault file.
+   ` make decrypt_vault`: Decrypts the vault file. Use this command to access the data within the vault file.
 
-   ` make ansible edit_vault`: Edits the vault file. This command allows you to modify confidential data inside the vault file.
+   ` make edit_vault`: Edits the vault file. This command allows you to modify confidential data inside the vault file.
 
-   ` make ansible view_vault`: Views the contents of the vault file. Use this command to review confidential data within the vault file without editing it.
+   ` make view_vault`: Views the contents of the vault file. Use this command to review confidential data within the vault file without editing it.
 
 6. **Initialize the Infrastructure:** Run the terraform init command to initialize Terraform:
 
-   ```make terraform init```
+   ```make init```
 
 7. **Apply Infrastructure Changes:** Run the terraform apply command to create a Droplet with Nginx installed on DigitalOcean:
 
-   ```make terraform apply```
+   ```make apply```
 
 After executing the terraform apply command, Terraform will provide you with information about the created Droplet, including its IP address.
 
@@ -97,21 +94,26 @@ Open your web browser and visit the Droplet's IP address to see the default Ngin
 8. **Install Ansible Roles:** Before running the playbook, make sure you have the required Ansible roles installed. You can install>
 
    ```bash
-   make ansible install-roles
+   make install-roles
    ```
 To access the newly created Droplets, you can connect using the following command: `ssh root@IP_address_of_your_droplet` You can find the IP address in either the inventory file located in the Ansible directory or within the DigitalOcean project.
 
 9. **Deploy Your Application to Droplets:** Deploy your application to the Droplets by executing the following command:
 
     ```bash
-    make ansible deploy-droplets
+    make deploy-droplets
     ```
+## Deployed Application
+
+You can find the deployed application at the following link:
+
+- [Wiki.js](http://www.staceynik.store/)
 
 ### Destroying Infrastructure
 
 To remove the created Droplet and associated resources, run the command:
 
-   ```make terraform destroy```
+   ```make destroy```
 
 WARNING: This command will permanently delete the created Droplet and associated resources. Please be cautious when using this command.
 Makefile Commands

@@ -1,12 +1,8 @@
 ---
 - hosts: droplets
   become: yes
-  vars:
-    db_host: "{{ hostvars[inventory_hostname].db_host }}"
-    db_user: "{{ hostvars[inventory_hostname].db_user }}"
-    db_password: "{{ hostvars[inventory_hostname].db_password }}"
-    db_name: "{{ hostvars[inventory_hostname].db_name }}"
   roles:
+    - geerlingguy.docker
     - docker_install
 
 - hosts: droplets

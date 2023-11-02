@@ -89,18 +89,36 @@ resource "digitalocean_database_cluster" "my_db" {
 resource "local_file" "inventory" {
   filename = "../ansible/inventory.ini"
   content  = <<-EOT
-
 [droplets]
 ${join("\n", [for instance in digitalocean_droplet.web : "${instance.name} ansible_host=${instance.ipv4_address} ansible_user=root"])}
+  EOT
+}
 
-[load_balancer]
-web-lb ansible_host=${digitalocean_loadbalancer.lb.ip} ansible_user=root
+resource "local_file" "load_balancer_vars" {
+  filename = "../ansible/group_vars/webservers/load_balancer.yml"
+  content  = <<-EOT
+---
+load_balancer:
+  ansible_host: "${digitalocean_loadbalancer.lb.ip}"
+  ansible_user: root
+  EOT
+}
 
-[db]
-my-database ansible_host=${digitalocean_database_cluster.my_db.host} ansible_user=postgres db_password="${digitalocean_database_cluster.my_db.password}"
+resource "local_file" "db_vars" {
+  filename = "../ansible/group_vars/webservers/db.yml"
+  content  = <<-EOT
+---
+db:
+  ansible_host: "${digitalocean_database_cluster.my_db.host}"
+  ansible_user: postgres
+  EOT
+}
 
-[domain]
-staceynik.store
+resource "local_file" "secrets" {
+  filename = "../ansible/group_vars/webservers/secrets.yml"
+  content  = <<-EOT
+---
+db_password: "${digitalocean_database_cluster.my_db.password}"
   EOT
 }
 

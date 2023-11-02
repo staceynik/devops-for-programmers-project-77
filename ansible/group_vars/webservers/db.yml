@@ -1,0 +1,4 @@
+---
+db:
+  ansible_host: "my-database-do-user-14663694-0.c.db.ondigitalocean.com"
+  ansible_user: postgres

@@ -1,0 +1,4 @@
+---
+load_balancer:
+  ansible_host: "178.128.140.136"
+  ansible_user: root

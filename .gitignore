@@ -4,3 +4,4 @@ terraform/*.backup
 ansible/inventory.ini
 ansible/ansible_vault_password.txt
 terraform/.terraform/providers/registry.terraform.io
+ansible/group_vars/webservers/secrets.yml
