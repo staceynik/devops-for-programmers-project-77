@@ -67,9 +67,9 @@ To simplify the setup process, you can use an automated script to create the nec
 The script will prompt you to enter your Ansible Vault password, DigitalOcean token, Datadog API key, and Datadog App key.
 
 Once you've provided the required information, the script will automatically generate the configuration files:
-`ansible/ansible_vault_password.txt` with your Ansible Vault password.
-`terraform/secrets.auto.tfvars` with your DigitalOcean token.
-`~/devops-for-programmers-project-77/group_vars/webservers/vault.yml` with your Datadog API key and App key securely stored.
+- `ansible/ansible_vault_password.txt` with your Ansible Vault password.
+- `terraform/secrets.auto.tfvars` with your DigitalOcean token.
+- `~/devops-for-programmers-project-77/group_vars/webservers/vault.yml` with your Datadog API key and App key securely stored.
 
 This automated setup process ensures that your configuration files are properly generated and your sensitive data is securely managed, making it more convenient and reliable.
 
@@ -77,13 +77,13 @@ This automated setup process ensures that your configuration files are properly 
 
 To securely store sensitive information, Ansible utilizes built-in encryption functionality through Ansible Vault. For your convenience in managing the vault, we provide the following commands:
 
-   ` make encrypt_vault`: Encrypts the vault file. This command helps safeguard sensitive data, such as passwords, API keys, and other secrets.
+- ` make encrypt_vault`: Encrypts the vault file. This command helps safeguard sensitive data, such as passwords, API keys, and other secrets.
 
-   ` make decrypt_vault`: Decrypts the vault file. Use this command to access the data within the vault file.
+- ` make decrypt_vault`: Decrypts the vault file. Use this command to access the data within the vault file.
 
-   ` make edit_vault`: Edits the vault file. This command allows you to modify confidential data inside the vault file.
+- ` make edit_vault`: Edits the vault file. This command allows you to modify confidential data inside the vault file.
 
-   ` make view_vault`: Views the contents of the vault file. Use this command to review confidential data within the vault file without editing it.
+- ` make view_vault`: Views the contents of the vault file. Use this command to review confidential data within the vault file without editing it.
 
 6. **Initialize the Infrastructure:** Run the terraform init command to initialize Terraform:
 
