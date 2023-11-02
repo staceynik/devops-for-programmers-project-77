@@ -10,18 +10,24 @@ In this project, we employ Terraform to provision infrastructure on DigitalOcean
 Before running Terraform to create your Droplets, you need to ensure that you have an SSH key set up and associated with your DigitalOcean account. Here are the steps to do that:
 
 1. **Check for Existing SSH Key (Optional):**
+
 First, check if you already have an SSH key pair on your local machine. You can do this by running the following command:
-   ```bash
+
+```bash
    ls ~/.ssh/id_rsa.pub
 ```
 2. **Generate an SSH Key Pair (If Needed):**
+
 If you don't have an existing SSH key, you can generate one by running the following command:
-   ```bash
+
+```bash
    ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
+
 This will generate a new SSH key pair. The public key will be located in `~/.ssh/id_rsa.pub`.
 
-3. **Log in to Your DigitalOcean Account:**
+3. **Log in to Your DigitalOcean Account**
+
 4. **Add the SSH Key:**
 - In the DigitalOcean dashboard, go to Settings > Security > SSH Keys.
 - Click on the Add SSH Key button.
@@ -55,7 +61,7 @@ To simplify the setup process, you can use an automated script to create the nec
 
 - Run the setup script by executing the following command:
 
-   ```bash
+```bash
    make setup
 ```
 The script will prompt you to enter your Ansible Vault password, DigitalOcean token, Datadog API key, and Datadog App key.
