@@ -22,3 +22,7 @@ variable "db_username" {
   default     = "YOUR_DB_USERNAME_HERE"
 }
 
+variable "external_port" {
+  type = number
+  default = 3000
+}

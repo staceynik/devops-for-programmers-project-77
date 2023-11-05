@@ -22,7 +22,7 @@
         image: lscr.io/linuxserver/wikijs:latest
         state: started
         ports:
-          - 3000:3000
+          - "{{ load_balancer.external_port }}:3000"
       tags:
         - run_container
 

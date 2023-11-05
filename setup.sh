@@ -1,10 +1,8 @@
 #!/bin/bash
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-ANSIBLE_VAULT_PASSWORD_FILE="$SCRIPT_DIR/ansible/ansible_vault_password.txt"
-TERRAFORM_SECRETS_FILE="$SCRIPT_DIR/terraform/secrets.auto.tfvars"
-VAULT_YML_FILE="$SCRIPT_DIR/group_vars/webservers/vault.yml"
+ANSIBLE_VAULT_PASSWORD_FILE="ansible/ansible_vault_password.txt"
+TERRAFORM_SECRETS_FILE="terraform/secrets.auto.tfvars"
+VAULT_YML_FILE="ansible/group_vars/webservers/vault.yml"
 
 read -s -p "Enter your Ansible Vault password: " vault_password
 echo $vault_password > "$ANSIBLE_VAULT_PASSWORD_FILE"

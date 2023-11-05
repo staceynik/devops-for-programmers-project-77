@@ -94,31 +94,26 @@ ${join("\n", [for instance in digitalocean_droplet.web : "${instance.name} ansib
   EOT
 }
 
-resource "local_file" "load_balancer_vars" {
-  filename = "../ansible/group_vars/webservers/load_balancer.yml"
+resource "local_file" "load_balancer" {
+  filename = "../ansible/group_vars/droplets/load_balancer.yml"
   content  = <<-EOT
 ---
 load_balancer:
   ansible_host: "${digitalocean_loadbalancer.lb.ip}"
   ansible_user: root
+  external_port: ${var.external_port}
   EOT
 }
 
-resource "local_file" "db_vars" {
-  filename = "../ansible/group_vars/webservers/db.yml"
-  content  = <<-EOT
----
-db:
-  ansible_host: "${digitalocean_database_cluster.my_db.host}"
-  ansible_user: postgres
-  EOT
-}
 
 resource "local_file" "secrets" {
   filename = "../ansible/group_vars/webservers/secrets.yml"
   content  = <<-EOT
 ---
-db_password: "${digitalocean_database_cluster.my_db.password}"
+db:
+  ansible_host: "${digitalocean_database_cluster.my_db.host}"
+  ansible_user: postgres
+  db_password: "${digitalocean_database_cluster.my_db.password}"
   EOT
 }
 

@@ -73,23 +73,11 @@ Once you've provided the required information, the script will automatically gen
 
 This automated setup process ensures that your configuration files are properly generated and your sensitive data is securely managed, making it more convenient and reliable.
 
-**Encrypt/Decrypt/Edit/View Vault**
-
-To securely store sensitive information, Ansible utilizes built-in encryption functionality through Ansible Vault. For your convenience in managing the vault, we provide the following commands:
-
-- ` make encrypt_vault`: Encrypts the vault file. This command helps safeguard sensitive data, such as passwords, API keys, and other secrets.
-
-- ` make decrypt_vault`: Decrypts the vault file. Use this command to access the data within the vault file.
-
-- ` make edit_vault`: Edits the vault file. This command allows you to modify confidential data inside the vault file.
-
-- ` make view_vault`: Views the contents of the vault file. Use this command to review confidential data within the vault file without editing it.
-
-6. **Initialize the Infrastructure:** Run the terraform init command to initialize Terraform:
+4. **Initialize the Infrastructure:** Run the terraform init command to initialize Terraform:
 
    ```make init```
 
-7. **Apply Infrastructure Changes:** Run the terraform apply command to create a Droplet with Nginx installed on DigitalOcean:
+5. **Apply Infrastructure Changes:** Run the terraform apply command to create a Droplet with Nginx installed on DigitalOcean:
 
    ```make apply```
 
@@ -97,14 +85,14 @@ After executing the terraform apply command, Terraform will provide you with inf
 
 Open your web browser and visit the Droplet's IP address to see the default Nginx page.
 
-8. **Install Ansible Roles:** Before running the playbook, make sure you have the required Ansible roles installed. You can install>
+6. **Install Ansible Roles:** Before running the playbook, make sure you have the required Ansible roles installed. You can install>
 
    ```bash
    make install-roles
    ```
 To access the newly created Droplets, you can connect using the following command: `ssh root@IP_address_of_your_droplet` You can find the IP address in either the inventory file located in the Ansible directory or within the DigitalOcean project.
 
-9. **Deploy Your Application to Droplets:** Deploy your application to the Droplets by executing the following command:
+7. **Deploy Your Application to Droplets:** Deploy your application to the Droplets by executing the following command:
 
     ```bash
     make deploy-droplets
