@@ -23,6 +23,6 @@ variable "db_username" {
 }
 
 variable "external_port" {
-  type = number
+  type    = number
   default = 3000
 }
