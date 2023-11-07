@@ -6,13 +6,13 @@ encrypt_vault:
 	@ansible-vault encrypt --vault-password-file=$(VAULT_PASSWORD_FILE) group_vars/webservers/vault.yml
 
 decrypt_vault:
-	@ansible-vault decrypt --vault-password-file=$(VAULT_PASSWORD_FILE) group_vars/webservers/vault.yml
+	@ansible-vault decrypt --vault-password-file=$(VAULT_PASSWORD_FILE) group_vars/droplets/vault.yml
 
 edit_vault:
-	@ansible-vault edit --vault-password-file=$(VAULT_PASSWORD_FILE) group_vars/webservers/vault.yml
+	@ansible-vault edit --vault-password-file=$(VAULT_PASSWORD_FILE) group_vars/droplets/vault.yml
 
 view_vault:
-	@ansible-vault view --vault-password-file=$(VAULT_PASSWORD_FILE) group_vars/webservers/vault.yml
+	@ansible-vault view --vault-password-file=$(VAULT_PASSWORD_FILE) group_vars/droplets/vault.yml
 
 install-roles:
 	@ansible-galaxy install -r requirements.yml

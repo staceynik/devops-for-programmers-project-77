@@ -13,6 +13,9 @@ echo "do_token = \"$do_token\"" > "$TERRAFORM_SECRETS_FILE"
 read -p "Enter your Datadog API key: " datadog_api_key
 read -p "Enter your Datadog App key: " app_key
 
+echo "datadog_api_key = \"$datadog_api_key\"" >> "$TERRAFORM_SECRETS_FILE"
+echo "datadog_app_key = \"$app_key\"" >> "$TERRAFORM_SECRETS_FILE"
+
 cat <<EOF > "$VAULT_YML_FILE"
 vault_vars:
   datadog_api_key: "$datadog_api_key"
