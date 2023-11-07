@@ -18,13 +18,13 @@ install-roles:
 	@ansible-galaxy install -r requirements.yml
 
 deploy-droplets:
-	@ansible-playbook -i $(CURDIR)/inventory.ini -l droplets --user=root --vault-password-file $(CURDIR)/ansible_vault_password.txt $(CURDIR)/playbook.yml
+	@ansible-playbook -i inventory.ini -l droplets --user=root --vault-password-file ansible_vault_password.txt playbook.yml
 
 pull-image:
-	@ansible-playbook -i $(CURDIR)/inventory.ini -l droplets --user=root --vault-password-file $(CURDIR)/ansible_vault_password.txt $(CURDIR)/playbook.yml --tags pull_image
+	@ansible-playbook -i inventory.ini -l droplets --user=root --vault-password-file ansible_vault_password.txt playbook.yml --tags pull_image
 
 run-container:
-	@ansible-playbook -i $(CURDIR)/inventory.ini -l droplets --user=root --vault-password-file $(CURDIR)/ansible_vault_password.txt $(CURDIR)/playbook.yml --tags run_container
+	@ansible-playbook -i inventory.ini -l droplets --user=root --vault-password-file ansible_vault_password.txt playbook.yml --tags run_container
 
 configure_datadog:
-	@ansible-playbook -i $(CURDIR)/inventory.ini -l droplets --user=root --vault-password-file $(CURDIR)/ansible_vault_password.txt $(CURDIR)/playbook.yml --tags configure_datadog
+	@ansible-playbook -i inventory.ini -l droplets --user=root --vault-password-file ansible_vault_password.txt playbook.yml --tags configure_datadog
