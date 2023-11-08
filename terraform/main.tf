@@ -105,10 +105,11 @@ load_balancer:
 
 
 resource "local_file" "secrets" {
-  filename = "../ansible/group_vars/webservers/secrets.yml"
+  filename = "../ansible/group_vars/droplets/secrets.yml"
   content  = <<-EOT
 ---
 db:
+  db_host: "${digitalocean_database_cluster.my_db.host}"
   db_password: "${digitalocean_database_cluster.my_db.password}"
   EOT
 }

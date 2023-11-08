@@ -2,7 +2,7 @@
 
 ANSIBLE_VAULT_PASSWORD_FILE="ansible/ansible_vault_password.txt"
 TERRAFORM_SECRETS_FILE="terraform/secrets.auto.tfvars"
-VAULT_YML_FILE="ansible/group_vars/webservers/vault.yml"
+VAULT_YML_FILE="ansible/group_vars/droplets/vault.yml"
 
 read -s -p "Enter your Ansible Vault password: " vault_password
 echo $vault_password > "$ANSIBLE_VAULT_PASSWORD_FILE"
@@ -14,7 +14,7 @@ read -p "Enter your Datadog API key: " datadog_api_key
 read -p "Enter your Datadog App key: " app_key
 
 echo "datadog_api_key = \"$datadog_api_key\"" >> "$TERRAFORM_SECRETS_FILE"
-echo "datadog_app_key = \"$app_key\"" >> "$TERRAFORM_SECRETS_FILE"
+echo "app_key = \"$app_key\"" >> "$TERRAFORM_SECRETS_FILE"
 
 cat <<EOF > "$VAULT_YML_FILE"
 vault_vars:
