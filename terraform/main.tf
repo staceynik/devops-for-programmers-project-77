@@ -10,11 +10,6 @@ terraform {
   }
 }
 
-output "database_password" {
-  value     = digitalocean_database_cluster.my_db.password
-  sensitive = true
-}
-
 data "digitalocean_ssh_key" "example_ssh_key" {
   name = "key"
 }
@@ -45,7 +40,7 @@ resource "digitalocean_loadbalancer" "lb" {
     entry_port     = 80
     entry_protocol = "http"
 
-    target_port     = 3000
+    target_port     = var.external_port
     target_protocol = "http"
   }
 
@@ -109,8 +104,8 @@ resource "local_file" "secrets" {
   content  = <<-EOT
 ---
 db:
-  db_host: "${digitalocean_database_cluster.my_db.host}"
-  db_password: "${digitalocean_database_cluster.my_db.password}"
+  host: "${digitalocean_database_cluster.my_db.host}"
+  password: "${digitalocean_database_cluster.my_db.password}"
   EOT
 }
 

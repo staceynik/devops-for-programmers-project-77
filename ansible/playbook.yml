@@ -30,7 +30,6 @@
   hosts: droplets
   become: true
   roles:
-    - datadog.datadog
+    - role: datadog.datadog
   tags:
     - configure_datadog
-
