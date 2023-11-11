@@ -45,7 +45,7 @@ resource "digitalocean_loadbalancer" "lb" {
   }
 
   healthcheck {
-    port     = 3000
+    port     = var.external_port
     protocol = "http"
     path     = "/"
   }

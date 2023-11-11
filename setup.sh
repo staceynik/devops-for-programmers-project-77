@@ -14,7 +14,7 @@ read -p "Enter your Datadog App key: " app_key
 cat <<EOF > "$TERRAFORM_SECRETS_FILE"
 do_token = "$do_token"
 datadog_api_key = "$datadog_api_key"
-datadog_app_key = "$app_key"
+app_key = "$app_key"
 EOF
 
 cat <<EOF > "$VAULT_YML_FILE"
