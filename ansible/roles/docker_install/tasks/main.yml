@@ -16,11 +16,13 @@
   command: apt-key list | grep Docker
   register: docker_gpg_key_check
   ignore_errors: yes
+  changed_when: false
 
 - name: Check if Docker repository is already added
   command: grep -r docker /etc/apt/sources.list /etc/apt/sources.list.d/
   register: docker_repo_check
   ignore_errors: yes
+  changed_when: false
 
 - name: Install Docker Python library
   pip:
