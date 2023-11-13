@@ -14,7 +14,7 @@ Before running Terraform to create your Droplets, you need to ensure that you ha
 First, check if you already have an SSH key pair on your local machine. You can do this by running the following command:
 
 ```bash
-   ls ~/.ssh/id_rsa.pub
+   cat ~/.ssh/id_rsa.pub
 ```
 2. **Generate an SSH Key Pair (If Needed):**
 
