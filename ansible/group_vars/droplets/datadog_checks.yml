@@ -9,3 +9,12 @@ datadog_checks:
         cpu_check_interval: 0.2
         exact_match: true
         ignore_denied_access: true
+
+  http_check:
+    init_config:
+    instances:
+      - name: My Web Service
+        url: http://www.staceynik.store
+        timeout: 5
+        method: GET
+        expected_status_code: 200
