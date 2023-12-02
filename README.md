@@ -115,3 +115,7 @@ Makefile Commands
 ### License
 
 This project is licensed under the MIT License.
+
+[terraform.webm](https://github.com/staceynik/devops-for-programmers-project-77/assets/48840427/c928b7db-78ce-4df8-9ede-ebe5b84712c0)
+
+
